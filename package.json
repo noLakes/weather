@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "dotenv-webpack": "^7.0.1",
     "webpack": "^5.25.1",
     "webpack-cli": "^4.5.0"
   },
