@@ -1,9 +1,10 @@
 "use strict";
 
 var form = document.querySelector('form.search');
-var temp = document.querySelector('h2.temp');
-var location = document.querySelector('h4.location');
-var feelsLike = document.querySelector('h4.feels-like');
+var temp = document.querySelector('.temp');
+var location = document.querySelector('.location');
+var time = document.querySelector('.time');
+var feelsLike = document.querySelector('.feels-like');
 form.addEventListener('submit', function (e) {
   return e.preventDefault();
 });
@@ -16,10 +17,21 @@ function clearForm() {
   form.querySelector('input[type="text"]').value = '';
 }
 
+function getLocationTime(offset) {
+  var date = new Date();
+  var localTime = date.getTime();
+  var localOffset = date.getTimezoneOffset() * 60000;
+  var utc = localTime + localOffset;
+  var locationTime = utc + offset * 1000;
+  locationTime = new Date(locationTime);
+  return locationTime.getHours() + ':' + ('0' + locationTime.getMinutes()).substr(-2);
+}
+
 function fillInfo(data) {
   temp.innerHTML = Math.round(data.main.temp);
+  location.innerHTML = "".concat(data.name, ", ").concat(data.sys.country);
+  time.innerHTML = getLocationTime(Number(data.timezone));
   feelsLike.innerHTML = "feels like ".concat(Math.round(data.main.feels_like));
-  location.innerHTML = data.name;
 }
 
 function getWeather(city) {

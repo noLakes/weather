@@ -1,7 +1,8 @@
 const form = document.querySelector('form.search')
-const temp = document.querySelector('h2.temp')
-const location = document.querySelector('h4.location')
-const feelsLike = document.querySelector('h4.feels-like')
+const temp = document.querySelector('.temp')
+const location = document.querySelector('.location')
+const time = document.querySelector('.time')
+const feelsLike = document.querySelector('.feels-like')
 
 form.addEventListener('submit', (e) => e.preventDefault())
 
@@ -13,10 +14,21 @@ function clearForm () {
   form.querySelector('input[type="text"]').value = ''
 }
 
+function getLocationTime (offset) {
+  const date = new Date()
+  const localTime = date.getTime()
+  const localOffset = date.getTimezoneOffset() * 60000
+  const utc = localTime + localOffset
+  let locationTime = utc + (offset * 1000)
+  locationTime = new Date(locationTime)
+  return locationTime.getHours() + ':' + ('0' + locationTime.getMinutes()).substr(-2)
+}
+
 function fillInfo (data) {
   temp.innerHTML = Math.round(data.main.temp)
+  location.innerHTML = `${data.name}, ${data.sys.country}`
+  time.innerHTML = getLocationTime(Number(data.timezone))
   feelsLike.innerHTML = `feels like ${Math.round(data.main.feels_like)}`
-  location.innerHTML = data.name
 }
 
 async function getWeather (city) {
