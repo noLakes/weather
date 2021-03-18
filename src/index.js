@@ -21,7 +21,8 @@ function getLocationTime (offset) {
   const utc = localTime + localOffset
   let locationTime = utc + (offset * 1000)
   locationTime = new Date(locationTime)
-  return locationTime.getHours() + ':' + ('0' + locationTime.getMinutes()).substr(-2)
+  // return locationTime.getHours() + ':' + ('0' + locationTime.getMinutes()).substr(-2)
+  return locationTime.toLocaleString('en', { timeStyle: 'short' })
 }
 
 function fillInfo (data) {

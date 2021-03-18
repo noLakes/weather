@@ -23,8 +23,11 @@ function getLocationTime(offset) {
   var localOffset = date.getTimezoneOffset() * 60000;
   var utc = localTime + localOffset;
   var locationTime = utc + offset * 1000;
-  locationTime = new Date(locationTime);
-  return locationTime.getHours() + ':' + ('0' + locationTime.getMinutes()).substr(-2);
+  locationTime = new Date(locationTime); // return locationTime.getHours() + ':' + ('0' + locationTime.getMinutes()).substr(-2)
+
+  return locationTime.toLocaleString('en', {
+    timeStyle: 'short'
+  });
 }
 
 function fillInfo(data) {
