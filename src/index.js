@@ -9,6 +9,10 @@ function getInput () {
   return form.querySelector('input[type="text"]').value
 }
 
+function clearForm () {
+  form.querySelector('input[type="text"]').value = ''
+}
+
 function fillInfo (data) {
   temp.innerHTML = Math.round(data.main.temp)
   feelsLike.innerHTML = `feels like ${Math.round(data.main.feels_like)}`
@@ -26,14 +30,21 @@ async function getWeather (city) {
   }
 }
 
+async function loadWeather (city) {
+  try {
+    const data = await getWeather(city)
+    fillInfo(data)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 form.querySelector('input[type="submit"]').addEventListener('click', async (e) => {
   const query = getInput()
   if (query) {
-    try {
-      const data = await getWeather(query)
-      fillInfo(data)
-    } catch (error) {
-      console.log(error)
-    }
+    loadWeather(query)
+    clearForm()
   }
 })
+
+loadWeather('Bunbury')

@@ -12,6 +12,10 @@ function getInput() {
   return form.querySelector('input[type="text"]').value;
 }
 
+function clearForm() {
+  form.querySelector('input[type="text"]').value = '';
+}
+
 function fillInfo(data) {
   temp.innerHTML = Math.round(data.main.temp);
   feelsLike.innerHTML = "feels like ".concat(Math.round(data.main.feels_like));
@@ -53,38 +57,53 @@ function getWeather(city) {
   }, null, null, [[0, 11]]);
 }
 
-form.querySelector('input[type="submit"]').addEventListener('click', function _callee(e) {
-  var query, data;
-  return regeneratorRuntime.async(function _callee$(_context2) {
+function loadWeather(city) {
+  var data;
+  return regeneratorRuntime.async(function loadWeather$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
         case 0:
-          query = getInput();
+          _context2.prev = 0;
+          _context2.next = 3;
+          return regeneratorRuntime.awrap(getWeather(city));
 
-          if (!query) {
-            _context2.next = 12;
-            break;
-          }
-
-          _context2.prev = 2;
-          _context2.next = 5;
-          return regeneratorRuntime.awrap(getWeather(query));
-
-        case 5:
+        case 3:
           data = _context2.sent;
           fillInfo(data);
-          _context2.next = 12;
+          _context2.next = 10;
           break;
 
-        case 9:
-          _context2.prev = 9;
-          _context2.t0 = _context2["catch"](2);
+        case 7:
+          _context2.prev = 7;
+          _context2.t0 = _context2["catch"](0);
           console.log(_context2.t0);
 
-        case 12:
+        case 10:
         case "end":
           return _context2.stop();
       }
     }
-  }, null, null, [[2, 9]]);
+  }, null, null, [[0, 7]]);
+}
+
+form.querySelector('input[type="submit"]').addEventListener('click', function _callee(e) {
+  var query;
+  return regeneratorRuntime.async(function _callee$(_context3) {
+    while (1) {
+      switch (_context3.prev = _context3.next) {
+        case 0:
+          query = getInput();
+
+          if (query) {
+            loadWeather(query);
+            clearForm();
+          }
+
+        case 2:
+        case "end":
+          return _context3.stop();
+      }
+    }
+  });
 });
+loadWeather('Bunbury');
