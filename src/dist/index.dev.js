@@ -2,8 +2,11 @@
 
 var form = document.querySelector('form.search');
 var temp = document.querySelector('.temp');
+var max = document.querySelector('.max');
+var min = document.querySelector('.min');
 var location = document.querySelector('.location');
 var time = document.querySelector('.time');
+var description = document.querySelector('.description');
 var feelsLike = document.querySelector('.feels-like');
 form.addEventListener('submit', function (e) {
   return e.preventDefault();
@@ -31,9 +34,12 @@ function getLocationTime(offset) {
 }
 
 function fillInfo(data) {
-  temp.innerHTML = Math.round(data.main.temp);
+  temp.innerHTML = Math.round(data.main.temp) + '°';
+  max.innerHTML = Math.round(data.main.temp_max);
+  min.innerHTML = Math.round(data.main.temp_min);
   location.innerHTML = "".concat(data.name, ", ").concat(data.sys.country);
-  time.innerHTML = getLocationTime(Number(data.timezone));
+  time.innerHTML = "".concat(getLocationTime(Number(data.timezone)));
+  description.innerHTML = "".concat(data.weather['0'].description);
   feelsLike.innerHTML = "feels like ".concat(Math.round(data.main.feels_like));
 }
 

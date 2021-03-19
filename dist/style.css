@@ -87,3 +87,13 @@ select {
   border: 1px solid rgb(84, 107, 147);
   border-radius: 10px;
 }
+
+.details {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.details li {
+  padding: 0rem 0.5rem;
+}

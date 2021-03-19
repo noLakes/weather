@@ -1,7 +1,10 @@
 const form = document.querySelector('form.search')
 const temp = document.querySelector('.temp')
+const max = document.querySelector('.max')
+const min = document.querySelector('.min')
 const location = document.querySelector('.location')
 const time = document.querySelector('.time')
+const description = document.querySelector('.description')
 const feelsLike = document.querySelector('.feels-like')
 
 form.addEventListener('submit', (e) => e.preventDefault())
@@ -26,9 +29,12 @@ function getLocationTime (offset) {
 }
 
 function fillInfo (data) {
-  temp.innerHTML = Math.round(data.main.temp)
+  temp.innerHTML = Math.round(data.main.temp) + '°'
+  max.innerHTML = Math.round(data.main.temp_max)
+  min.innerHTML = Math.round(data.main.temp_min)
   location.innerHTML = `${data.name}, ${data.sys.country}`
-  time.innerHTML = getLocationTime(Number(data.timezone))
+  time.innerHTML = `${getLocationTime(Number(data.timezone))}`
+  description.innerHTML = `${data.weather['0'].description}`
   feelsLike.innerHTML = `feels like ${Math.round(data.main.feels_like)}`
 }
 
