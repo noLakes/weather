@@ -8,6 +8,7 @@ var location = document.querySelector('.location');
 var time = document.querySelector('.time');
 var description = document.querySelector('.description');
 var feelsLike = document.querySelector('.feels-like');
+var wind = document.querySelector('.wind');
 form.addEventListener('submit', function (e) {
   return e.preventDefault();
 });
@@ -33,6 +34,76 @@ function getLocationTime(offset) {
   });
 }
 
+function between(val, a, b) {
+  return val >= a && val <= b;
+} // returns description of wind conditions using Beaufort wind chart descriptors
+
+
+function getWindCondition(speed) {
+  var metric = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+  // normalizes to mph
+  if (metric) speed = speed / 0.44704;
+  speed = Math.round(speed);
+  var wind = '';
+
+  switch (speed) {
+    case speed === 0:
+      wind = 'calm';
+      break;
+
+    case between(speed, 1, 3):
+      wind = 'light air';
+      break;
+
+    case between(speed, 4, 7):
+      wind = 'light breeze';
+      break;
+
+    case between(speed, 8, 12):
+      wind = 'gentle breeze';
+      break;
+
+    case between(speed, 13, 18):
+      wind = 'moderate breeze';
+      break;
+
+    case between(speed, 19, 24):
+      wind = 'fresh breeze';
+      break;
+
+    case between(speed, 25, 31):
+      wind = 'strong breeze';
+      break;
+
+    case between(speed, 32, 38):
+      wind = 'near gale';
+      break;
+
+    case between(speed, 39, 46):
+      wind = 'gale';
+      break;
+
+    case between(speed, 47, 54):
+      wind = 'severe gale';
+      break;
+
+    case between(speed, 55, 63):
+      wind = 'storm';
+      break;
+
+    case between(speed, 64, 73):
+      wind = 'violent storm';
+      break;
+
+    case between(speed, 74, 999):
+      wind = 'hurricane';
+      break;
+  }
+
+  console.log('hello, i was called!');
+  return wind;
+}
+
 function fillInfo(data) {
   temp.innerHTML = Math.round(data.main.temp) + '°';
   max.innerHTML = Math.round(data.main.temp_max);
@@ -41,6 +112,8 @@ function fillInfo(data) {
   time.innerHTML = "".concat(getLocationTime(Number(data.timezone)));
   description.innerHTML = "".concat(data.weather['0'].description);
   feelsLike.innerHTML = "feels like ".concat(Math.round(data.main.feels_like));
+  console.log(getWindCondition(Number(data.wind.speed)));
+  wind.innerHTML = getWindCondition(Number(data.wind.speed));
 }
 
 function getWeather(city) {
@@ -128,3 +201,4 @@ form.querySelector('input[type="submit"]').addEventListener('click', function _c
   });
 });
 loadWeather('Bunbury');
+console.log(between(3, 2, 4));
