@@ -7,6 +7,8 @@ const time = document.querySelector('.time')
 const description = document.querySelector('.description')
 const feelsLike = document.querySelector('.feels-like')
 const wind = document.querySelector('.wind')
+const sunRise = document.querySelector('.sunrise')
+const sunSet = document.querySelector('.sunset')
 
 form.addEventListener('submit', (e) => e.preventDefault())
 
@@ -18,15 +20,21 @@ function clearForm () {
   form.querySelector('input[type="text"]').value = ''
 }
 
-function getLocationTime (offset) {
-  const date = new Date()
+// converts current time (or target time) from local timezone to target offsets timezone
+function getLocationDate (offset, date = new Date()) {
   const localTime = date.getTime()
   const localOffset = date.getTimezoneOffset() * 60000
   const utc = localTime + localOffset
-  let locationTime = utc + (offset * 1000)
-  locationTime = new Date(locationTime)
-  // return locationTime.getHours() + ':' + ('0' + locationTime.getMinutes()).substr(-2)
-  return locationTime.toLocaleString('en', { timeStyle: 'short' })
+  const locationTime = utc + (offset * 1000)
+  return new Date(locationTime)
+}
+
+function shortDate (date) {
+  return date.toLocaleString('en', { timeStyle: 'short' })
+}
+
+function unixDate (unix) {
+  return new Date(Number(unix) * 1000)
 }
 
 function between (val, a, b) {
@@ -40,48 +48,33 @@ function getWindCondition (speed, metric=true) {
   speed = Math.round(speed)
   let wind = ''
 
-  switch (speed) {
-    case (speed === 0):
-      wind = 'calm'
-      break
-    case (between(speed, 1, 3)):
-      wind = 'light air'
-      break
-    case (between(speed, 4, 7)):
-      wind = 'light breeze'
-      break
-    case (between(speed, 8, 12)):
-      wind = 'gentle breeze'
-      break
-    case (between(speed, 13, 18)):
-      wind = 'moderate breeze'
-      break
-    case (between(speed, 19, 24)):
-      wind = 'fresh breeze'
-      break
-    case (between(speed, 25, 31)):
-      wind = 'strong breeze'
-      break
-    case (between(speed, 32, 38)):
-      wind = 'near gale'
-      break
-    case (between(speed, 39, 46)):
-      wind = 'gale'
-      break
-    case (between(speed, 47, 54)):
-      wind = 'severe gale'
-      break
-    case (between(speed, 55, 63)):
-      wind = 'storm'
-      break
-    case (between(speed, 64, 73)):
-      wind = 'violent storm'
-      break
-    case (between(speed, 74, 999)):
-      wind = 'hurricane'
-      break
+  if (speed === 0) {
+    wind = 'calm'
+  } else if (between(speed, 1, 3)) {
+    wind = 'light air'
+  } else if (between(speed, 4, 7)) {
+    wind = 'light breeze'
+  } else if (between(speed, 8, 12)) {
+    wind = 'gentle breeze'
+  } else if (between(speed, 13, 18)) {
+    wind = 'moderate breeze'
+  } else if (between(speed, 19, 24)) {
+    wind = 'fresh breeze'
+  } else if (between(speed, 25, 31)) {
+    wind = 'strong breeze'
+  } else if (between(speed, 32, 38)) {
+    wind = 'near gale'
+  } else if (between(speed, 39, 46)) {
+    wind = 'gale'
+  } else if (between(speed, 47, 54)) {
+    wind = 'severe gale'
+  } else if (between(speed, 55, 63)) {
+    wind = 'storm'
+  } else if (between(speed, 64, 73)) {
+    wind = 'violent storm'
+  } else if (between(speed, 74, 999)) {
+    wind = 'hurricane'
   }
-  console.log('hello, i was called!')
   return wind
 }
 
@@ -90,11 +83,12 @@ function fillInfo (data) {
   max.innerHTML = Math.round(data.main.temp_max)
   min.innerHTML = Math.round(data.main.temp_min)
   location.innerHTML = `${data.name}, ${data.sys.country}`
-  time.innerHTML = `${getLocationTime(Number(data.timezone))}`
+  time.innerHTML = `${shortDate(getLocationDate(Number(data.timezone)))}`
   description.innerHTML = `${data.weather['0'].description}`
   feelsLike.innerHTML = `feels like ${Math.round(data.main.feels_like)}`
-  console.log(getWindCondition(Number(data.wind.speed)))
   wind.innerHTML = getWindCondition(Number(data.wind.speed))
+  sunRise.innerHTML = shortDate(getLocationDate(data.timezone, unixDate(data.sys.sunrise)))
+  sunSet.innerHTML = shortDate(getLocationDate(data.timezone, unixDate(data.sys.sunset)))
 }
 
 async function getWeather (city) {

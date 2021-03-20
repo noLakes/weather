@@ -9,6 +9,8 @@ var time = document.querySelector('.time');
 var description = document.querySelector('.description');
 var feelsLike = document.querySelector('.feels-like');
 var wind = document.querySelector('.wind');
+var sunRise = document.querySelector('.sunrise');
+var sunSet = document.querySelector('.sunset');
 form.addEventListener('submit', function (e) {
   return e.preventDefault();
 });
@@ -19,19 +21,26 @@ function getInput() {
 
 function clearForm() {
   form.querySelector('input[type="text"]').value = '';
-}
+} // converts current time (or target time) from local timezone to target offsets timezone
 
-function getLocationTime(offset) {
-  var date = new Date();
+
+function getLocationDate(offset) {
+  var date = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : new Date();
   var localTime = date.getTime();
   var localOffset = date.getTimezoneOffset() * 60000;
   var utc = localTime + localOffset;
   var locationTime = utc + offset * 1000;
-  locationTime = new Date(locationTime); // return locationTime.getHours() + ':' + ('0' + locationTime.getMinutes()).substr(-2)
+  return new Date(locationTime);
+}
 
-  return locationTime.toLocaleString('en', {
+function shortDate(date) {
+  return date.toLocaleString('en', {
     timeStyle: 'short'
   });
+}
+
+function unixDate(unix) {
+  return new Date(Number(unix) * 1000);
 }
 
 function between(val, a, b) {
@@ -46,61 +55,34 @@ function getWindCondition(speed) {
   speed = Math.round(speed);
   var wind = '';
 
-  switch (speed) {
-    case speed === 0:
-      wind = 'calm';
-      break;
-
-    case between(speed, 1, 3):
-      wind = 'light air';
-      break;
-
-    case between(speed, 4, 7):
-      wind = 'light breeze';
-      break;
-
-    case between(speed, 8, 12):
-      wind = 'gentle breeze';
-      break;
-
-    case between(speed, 13, 18):
-      wind = 'moderate breeze';
-      break;
-
-    case between(speed, 19, 24):
-      wind = 'fresh breeze';
-      break;
-
-    case between(speed, 25, 31):
-      wind = 'strong breeze';
-      break;
-
-    case between(speed, 32, 38):
-      wind = 'near gale';
-      break;
-
-    case between(speed, 39, 46):
-      wind = 'gale';
-      break;
-
-    case between(speed, 47, 54):
-      wind = 'severe gale';
-      break;
-
-    case between(speed, 55, 63):
-      wind = 'storm';
-      break;
-
-    case between(speed, 64, 73):
-      wind = 'violent storm';
-      break;
-
-    case between(speed, 74, 999):
-      wind = 'hurricane';
-      break;
+  if (speed === 0) {
+    wind = 'calm';
+  } else if (between(speed, 1, 3)) {
+    wind = 'light air';
+  } else if (between(speed, 4, 7)) {
+    wind = 'light breeze';
+  } else if (between(speed, 8, 12)) {
+    wind = 'gentle breeze';
+  } else if (between(speed, 13, 18)) {
+    wind = 'moderate breeze';
+  } else if (between(speed, 19, 24)) {
+    wind = 'fresh breeze';
+  } else if (between(speed, 25, 31)) {
+    wind = 'strong breeze';
+  } else if (between(speed, 32, 38)) {
+    wind = 'near gale';
+  } else if (between(speed, 39, 46)) {
+    wind = 'gale';
+  } else if (between(speed, 47, 54)) {
+    wind = 'severe gale';
+  } else if (between(speed, 55, 63)) {
+    wind = 'storm';
+  } else if (between(speed, 64, 73)) {
+    wind = 'violent storm';
+  } else if (between(speed, 74, 999)) {
+    wind = 'hurricane';
   }
 
-  console.log('hello, i was called!');
   return wind;
 }
 
@@ -109,11 +91,12 @@ function fillInfo(data) {
   max.innerHTML = Math.round(data.main.temp_max);
   min.innerHTML = Math.round(data.main.temp_min);
   location.innerHTML = "".concat(data.name, ", ").concat(data.sys.country);
-  time.innerHTML = "".concat(getLocationTime(Number(data.timezone)));
+  time.innerHTML = "".concat(shortDate(getLocationDate(Number(data.timezone))));
   description.innerHTML = "".concat(data.weather['0'].description);
   feelsLike.innerHTML = "feels like ".concat(Math.round(data.main.feels_like));
-  console.log(getWindCondition(Number(data.wind.speed)));
   wind.innerHTML = getWindCondition(Number(data.wind.speed));
+  sunRise.innerHTML = shortDate(getLocationDate(data.timezone, unixDate(data.sys.sunrise)));
+  sunSet.innerHTML = shortDate(getLocationDate(data.timezone, unixDate(data.sys.sunset)));
 }
 
 function getWeather(city) {
