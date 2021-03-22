@@ -69,6 +69,16 @@ select {
 
 /* CSS RESET ENDS */
 
+@font-face {
+  font-family: 'Ubuntu';
+  src: url('./fonts/Ubuntu-Regular.ttf');
+  font-weight: 400;
+}
+
+* {
+  font-family: Ubuntu, Helvetica, sans-serif, Arial;
+}
+
 .main-container {
   display: flex;
   flex-direction: column;
