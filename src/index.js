@@ -120,5 +120,3 @@ form.querySelector('input[type="submit"]').addEventListener('click', async (e) =
 })
 
 loadWeather('Bunbury')
-
-console.log(between(3,2,4))

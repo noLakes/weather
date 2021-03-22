@@ -184,4 +184,3 @@ form.querySelector('input[type="submit"]').addEventListener('click', function _c
   });
 });
 loadWeather('Bunbury');
-console.log(between(3, 2, 4));
