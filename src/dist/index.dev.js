@@ -1,7 +1,7 @@
 "use strict";
 
 var form = document.querySelector('form.search');
-var temp = document.querySelector('.temp');
+var temp = document.querySelector('.temp .value');
 var max = document.querySelector('.max');
 var min = document.querySelector('.min');
 var location = document.querySelector('.location');
@@ -9,8 +9,8 @@ var time = document.querySelector('.time');
 var description = document.querySelector('.description');
 var feelsLike = document.querySelector('.feels-like');
 var wind = document.querySelector('.wind');
-var sunRise = document.querySelector('.sunrise');
-var sunSet = document.querySelector('.sunset');
+var sunRise = document.querySelector('.sun .rise');
+var sunSet = document.querySelector('.sun .set');
 form.addEventListener('submit', function (e) {
   return e.preventDefault();
 });
@@ -34,9 +34,15 @@ function getLocationDate(offset) {
 }
 
 function shortDate(date) {
-  return date.toLocaleString('en', {
+  var time = date.toLocaleString('en-GB', {
     timeStyle: 'short'
   });
+
+  if (time.substr(0, 1) === '0') {
+    return time.substr(1);
+  } else {
+    return time;
+  }
 }
 
 function unixDate(unix) {
@@ -87,7 +93,7 @@ function getWindCondition(speed) {
 }
 
 function fillInfo(data) {
-  temp.innerHTML = Math.round(data.main.temp) + '°';
+  temp.innerHTML = Math.round(data.main.temp);
   max.innerHTML = Math.round(data.main.temp_max);
   min.innerHTML = Math.round(data.main.temp_min);
   location.innerHTML = "".concat(data.name, ", ").concat(data.sys.country);

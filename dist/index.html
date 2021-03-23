@@ -10,36 +10,40 @@
     <div class="main-container">
 
       <div class="forecast-container">
-
-        <div class="location-container">
-          <h4 class="location">Bunbury</h4>
+        <div class="top-container">
+          <div class="location-container">
+            <p class="location size-2"></p>
+            <p class="description size-3"></p>
+          </div>
         </div>
-
-        <div class="temp-contaner">
-          <h1 class="temp">0 Deg</h2>
-          <h5 class="min-max"><span class="max"></span> | <span class="min"></span></h5>
+        <div class="middle-container">
+            <p class="temp">
+              <span class="value size-1"></span>
+              <span class="celcius size-2">°C</span>
+              <span class="farenheit size-2">°F</span>
+            </p>
+            <ul class="details">
+              <li class="time size-3"></li>
+              <li class="feels-like size-3">feels like <span>0</span></li>
+              <li class="wind size-3"></li>
+              <li class="min-max size-3">
+                high <span class="max"></span> low <span class="min"></span>
+              </li>
+              <li class="sun size-3">
+                <i class="far fa-sun"></i>
+                <span class="rise"></span>
+                <i class="far fa-moon"></i>
+                <span class="set"></span>
+              </li>
+            </ul>
         </div>
-
-        <div class="details-container">
-          <ul class="details">
-            <li class="time"></li>
-            <li class="description"></li>
-            <li class="feels-like">feels like <span>0</span></li>
-            <li class="wind"></li>
-            <li class="sunrise"></li>
-            <li class="sunset"></li>
-          </ul>
-        </div>
-
-        <div class="search-container">
+        <div class="bottom-container">
           <form class="search">
             <input type="text" class="city" name="city" placeholder="search city">
             <input type="submit" value="go">
           </form>
         </div>
-
       </div>
-
     </div>
     
     <script src="main.js"></script>

@@ -1,5 +1,5 @@
 const form = document.querySelector('form.search')
-const temp = document.querySelector('.temp')
+const temp = document.querySelector('.temp .value')
 const max = document.querySelector('.max')
 const min = document.querySelector('.min')
 const location = document.querySelector('.location')
@@ -7,8 +7,8 @@ const time = document.querySelector('.time')
 const description = document.querySelector('.description')
 const feelsLike = document.querySelector('.feels-like')
 const wind = document.querySelector('.wind')
-const sunRise = document.querySelector('.sunrise')
-const sunSet = document.querySelector('.sunset')
+const sunRise = document.querySelector('.sun .rise')
+const sunSet = document.querySelector('.sun .set')
 
 form.addEventListener('submit', (e) => e.preventDefault())
 
@@ -30,7 +30,12 @@ function getLocationDate (offset, date = new Date()) {
 }
 
 function shortDate (date) {
-  return date.toLocaleString('en', { timeStyle: 'short' })
+  const time = date.toLocaleString('en-GB', { timeStyle: 'short' })
+  if (time.substr(0, 1) === '0') {
+    return time.substr(1)
+  } else {
+    return time
+  }
 }
 
 function unixDate (unix) {
@@ -79,7 +84,7 @@ function getWindCondition (speed, metric=true) {
 }
 
 function fillInfo (data) {
-  temp.innerHTML = Math.round(data.main.temp) + '°'
+  temp.innerHTML = Math.round(data.main.temp)
   max.innerHTML = Math.round(data.main.temp_max)
   min.innerHTML = Math.round(data.main.temp_min)
   location.innerHTML = `${data.name}, ${data.sys.country}`
