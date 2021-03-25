@@ -1,5 +1,6 @@
 "use strict";
 
+// elements
 var form = document.querySelector('form.search');
 var temp = document.querySelector('.temp .value');
 var max = document.querySelector('.max');
@@ -51,6 +52,20 @@ function unixDate(unix) {
 
 function between(val, a, b) {
   return val >= a && val <= b;
+}
+
+function setSunStyle(time, sunrise, sunset) {
+  if (time >= sunrise && time < sunset) {
+    document.querySelector('.main-container').classList.remove('night');
+    document.querySelector('.forecast-container').classList.remove('night');
+    document.querySelector('input.submit').classList.remove('night');
+    document.querySelector('input.city').classList.remove('night');
+  } else {
+    document.querySelector('.main-container').classList.add('night');
+    document.querySelector('.forecast-container').classList.add('night');
+    document.querySelector('input.submit').classList.add('night');
+    document.querySelector('input.city').classList.add('night');
+  }
 } // returns description of wind conditions using Beaufort wind chart descriptors
 
 
@@ -153,20 +168,21 @@ function loadWeather(city) {
         case 3:
           data = _context2.sent;
           fillInfo(data);
-          _context2.next = 10;
+          setSunStyle(getLocationDate(Number(data.timezone)), getLocationDate(data.timezone, unixDate(data.sys.sunrise)), getLocationDate(data.timezone, unixDate(data.sys.sunset)));
+          _context2.next = 11;
           break;
 
-        case 7:
-          _context2.prev = 7;
+        case 8:
+          _context2.prev = 8;
           _context2.t0 = _context2["catch"](0);
           console.log(_context2.t0);
 
-        case 10:
+        case 11:
         case "end":
           return _context2.stop();
       }
     }
-  }, null, null, [[0, 7]]);
+  }, null, null, [[0, 8]]);
 }
 
 form.querySelector('input[type="submit"]').addEventListener('click', function _callee(e) {

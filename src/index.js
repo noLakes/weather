@@ -1,3 +1,4 @@
+// elements
 const form = document.querySelector('form.search')
 const temp = document.querySelector('.temp .value')
 const max = document.querySelector('.max')
@@ -46,8 +47,22 @@ function between (val, a, b) {
   return (val >= a && val <= b)
 }
 
+function setSunStyle (time, sunrise, sunset) {
+  if (time >= sunrise && time < sunset) {
+    document.querySelector('.main-container').classList.remove('night')
+    document.querySelector('.forecast-container').classList.remove('night')
+    document.querySelector('input.submit').classList.remove('night')
+    document.querySelector('input.city').classList.remove('night')
+  } else {
+    document.querySelector('.main-container').classList.add('night')
+    document.querySelector('.forecast-container').classList.add('night')
+    document.querySelector('input.submit').classList.add('night')
+    document.querySelector('input.city').classList.add('night')
+  }
+}
+
 // returns description of wind conditions using Beaufort wind chart descriptors
-function getWindCondition (speed, metric=true) {
+function getWindCondition (speed, metric = true) {
   // normalizes to mph
   if (metric) speed = speed / 0.44704
   speed = Math.round(speed)
@@ -111,6 +126,11 @@ async function loadWeather (city) {
   try {
     const data = await getWeather(city)
     fillInfo(data)
+    setSunStyle(
+      getLocationDate(Number(data.timezone)),
+      getLocationDate(data.timezone, unixDate(data.sys.sunrise)),
+      getLocationDate(data.timezone, unixDate(data.sys.sunset))
+    )
   } catch (error) {
     console.log(error)
   }
