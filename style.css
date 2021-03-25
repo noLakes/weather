@@ -86,17 +86,27 @@ select {
   height: auto;
   min-height: 100vh;
   background-color: azure;
+  background-image: url(./img/cloud.jpg);
+  background-size: cover;
   align-items: center;
   justify-content: center;
+}
+
+.main-container.night {
+  background-image: url(./img/night.jpg);
 }
 
 .forecast-container {
   display: flex;
   flex-direction: column;
   padding: 1em;
-  background-color: rgb(128, 154, 238);
+  background-color: #4580c9e2;
   border-radius: 10px;
   color: rgb(242, 242, 242);
+}
+
+.forecast-container.night {
+  background-color: #1b0839db;
 }
 
 .top-container {
@@ -143,6 +153,59 @@ ul.details {
   padding-left: 1rem;
 }
 
+.form-container {
+  margin-top: 1rem;
+}
+
+input.city {
+  padding:8px 15px;
+  background:rgba(50, 50, 50, 0.2);
+  border:0px solid #dbdbdb;
+  border-radius: 10px 0px 0px 10px;
+}
+
+input.city.night {
+  color: rgb(242, 242, 242);
+  background:rgba(96, 96, 96, 0.262);
+}
+
+input.city:focus {
+  padding:7px 15px;
+  border-radius: 10px 0px 0px 10px;
+  box-shadow: 0 0 2px blue;
+  outline: none;
+}
+
+input.city.night:focus {
+  box-shadow: 0 0 2px #ad79fa;
+}
+
+form input[type="submit"] {
+  position: relative;
+  padding: 6px 15px;
+  left: -8px;
+  border: 2px solid #4580c9e2;
+  border-radius: 0px 10px 10px 0px;
+  background-color: #4580c9e2;
+  color: #fafafa;
+}
+
+form input[type="submit"].night {
+  border: 2px solid #341760;
+  background-color: #341760;
+}
+
+form input[type="submit"]:hover {
+  background-color:#fafafab8;
+  color: #4580c9e2;
+  cursor: pointer;
+}
+
+form input[type="submit"].night:hover {
+  background-color:#fafafab8;
+  color: #341760;
+}
+
 .size-1 {
   font-size: 172pt;
 }
@@ -157,4 +220,31 @@ ul.details {
 
 .size-4 {
   font-size: 20pt;
+}
+
+@media only screen and (max-width: 640px) {
+
+  .top-container {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .description {
+    text-align: center;
+  }
+
+  .middle-container {
+    flex-direction: column;
+    padding: 1rem 0rem 0rem 0rem;
+  }
+
+  ul.details {
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: 500px;
+    justify-content: center;
+    padding: 0.5rem 0rem 0rem 0rem;
+    margin-top: 1rem;
+  }
 }
